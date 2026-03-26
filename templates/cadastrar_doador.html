@@ -5,24 +5,57 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
-    <h1>Cadastrar doador</h1>
-    {% with messages = get_flashed_messages() %}
-      {% if messages %}
-        <ul>
-          {% for message in messages %}
-            <li>{{ message }}</li>
-          {% endfor %}
-        </ul>
-      {% endif %}
-    {% endwith %}
-    <form method="POST">
-        Nome*: <input type="text" name="nome" required><br>
-        Telefone*: <input type="text" name="telefone" required><br>
-        Email: <input type="email" name="email"><br>
-        CPF: <input type="text" name="cpf"><br>
-        <button type="submit">Cadastrar</button>
-    </form>
-    <br>
-    <a href="{{ url_for('index') }}">Voltar</a>
+
+<h1>Cadastrar doador</h1>
+
+<form method="POST">
+
+    Nome*: <input type="text" name="nome" required><br>
+
+    Telefone*:
+    <input type="text" name="telefone" maxlength="11" pattern="\d{10,11}" required>
+    <small>Somente números (DDD + número)</small><br>
+
+    Tipo de Pessoa*:
+    <select name="tipo_pessoa" id="tipo_pessoa" onchange="toggleCNPJ()" required>
+        <option value="PF">Pessoa Física</option>
+        <option value="PJ">Pessoa Jurídica</option>
+    </select><br>
+
+    CPF:
+    <input type="text" name="cpf" maxlength="11" pattern="\d{11}">
+    <small>Somente números</small><br>
+
+    <div id="cnpj_field" style="display:none;">
+        CNPJ:
+        <input type="text" name="cnpj" maxlength="14" pattern="\d{14}">
+        <small>Somente números</small><br>
+    </div>
+
+    Email:
+    <input type="email" name="email"><br>
+
+    Endereço:
+    <input type="text" name="endereco"><br>
+
+    <button type="submit">Cadastrar</button>
+</form>
+
+<br>
+<a href="{{ url_for('index') }}">Voltar</a>
+
+<script>
+function toggleCNPJ() {
+    var tipo = document.getElementById("tipo_pessoa").value;
+    var cnpjField = document.getElementById("cnpj_field");
+
+    if (tipo === "PJ") {
+        cnpjField.style.display = "block";
+    } else {
+        cnpjField.style.display = "none";
+    }
+}
+</script>
+
 </body>
 </html>

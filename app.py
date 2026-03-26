@@ -13,16 +13,23 @@ db = SQLAlchemy(app)
 class Doador(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     nome = db.Column(db.String(100), nullable=False)
-    telefone = db.Column(db.String(20), nullable=False)
+    telefone = db.Column(db.String(11), nullable=False)
     email = db.Column(db.String(100))
-    cpf = db.Column(db.String(20))
+    cpf = db.Column(db.String(11))
+    endereco = db.Column(db.String(200))
+    tipo_pessoa = db.Column(db.String(2), nullable=False)  # PF ou PJ
+    cnpj = db.Column(db.String(14))
 
 class Doacao(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     doador_id = db.Column(db.Integer, db.ForeignKey('doador.id'), nullable=False)
-    data = db.Column(db.String(10), nullable=False)  # dd/mm/aaaa
+    data = db.Column(db.String(8), nullable=False)  # agora 8 dígitos
     valor = db.Column(db.Float)
     observacao = db.Column(db.String(200))
+
+    forma_pagamento = db.Column(db.String(20))  # novo
+    tipo_doacao = db.Column(db.String(20))      # novo
+
     doador = db.relationship('Doador', backref=db.backref('doacoes', lazy=True))
 
 # Criar banco
@@ -43,11 +50,26 @@ def cadastrar_doador():
         telefone = request.form['telefone']
         email = request.form.get('email') or None
         cpf = request.form.get('cpf') or None
-        novo_doador = Doador(nome=nome, telefone=telefone, email=email, cpf=cpf)
+        endereco = request.form.get('endereco') or None
+        tipo_pessoa = request.form['tipo_pessoa']
+        cnpj = request.form.get('cnpj') or None
+
+        novo_doador = Doador(
+            nome=nome,
+            telefone=telefone,
+            email=email,
+            cpf=cpf,
+            endereco=endereco,
+            tipo_pessoa=tipo_pessoa,
+            cnpj=cnpj
+        )
+
         db.session.add(novo_doador)
         db.session.commit()
+
         flash("Doador cadastrado com sucesso!")
         return redirect(url_for('listar_doadores'))
+
     return render_template('cadastrar_doador.html')
 
 @app.route('/listar_doadores')
@@ -71,13 +93,22 @@ def registrar_doacao():
         data = request.form['data']
         valor = request.form.get('valor')
         observacao = request.form.get('observacao')
+        forma_pagamento = request.form.get('forma_pagamento') or None
+        tipo_doacao = request.form.get('tipo_doacao') or None
 
         if not valor and not observacao:
             flash("É necessário preencher pelo menos o valor ou a observação!")
             return redirect(url_for('registrar_doacao'))
 
         valor = float(valor) if valor else None
-        nova_doacao = Doacao(doador_id=doador_id, data=data, valor=valor, observacao=observacao)
+        nova_doacao = Doacao(
+            doador_id=doador_id,
+            data=data,
+            valor=valor,
+            observacao=observacao,
+            forma_pagamento=forma_pagamento,
+            tipo_doacao=tipo_doacao
+        )
         db.session.add(nova_doacao)
         db.session.commit()
         flash("Doação registrada com sucesso!")

@@ -22,8 +22,25 @@
                 <option value="{{ doador.id }}">{{ doador.nome }}</option>
             {% endfor %}
         </select><br>
-        Data* (dd/mm/aaaa): <input type="text" name="data" required><br>
-        Valor: <input type="number" name="valor" step="0.01"><br>
+        Data:
+        <input type="text" name="data" maxlength="8" pattern="\d{8}" required><br>
+        Valor:
+        <input type="number" name="valor" step="0.01"><br>
+        Forma de pagamento:
+        <select name="forma_pagamento">
+            <option value="">Selecione</option>
+            <option value="Dinheiro">Dinheiro</option>
+            <option value="Crédito">Cartão de Crédito</option>
+            <option value="Débito">Cartão de Débito</option>
+            <option value="Pix">Pix</option>
+        </select><br>
+        Tipo de doação:
+        <select name="tipo_doacao">
+            <option value="">Selecione</option>
+            <option value="Normal">Normal</option>
+            <option value="Anonima">Anônima</option>
+            <option value="Diversas">Diversas</option>
+        </select><br>
         Observação: <input type="text" name="observacao"><br>
         <button type="submit">Registrar Doação</button>
     </form>

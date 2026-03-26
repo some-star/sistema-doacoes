@@ -18,12 +18,19 @@
     <ul>
         {% for doador in doadores %}
             <li>
-                {{ doador.nome }} - {{ doador.telefone }}
-                {% if doador.email %}- {{ doador.email }}{% endif %}
-                {% if doador.cpf %}- {{ doador.cpf }}{% endif %}
-                <form method="POST" action="{{ url_for('excluir_doador', id=doador.id) }}" style="display:inline;" onsubmit="return confirm('Tem certeza que deseja excluir este doador?');">
-                    <button type="submit">Excluir</button>
-                </form>
+                {{ doador.nome }} - {{ doador.telefone }} - {{ doador.tipo_pessoa }}
+
+                {% if doador.cpf %}
+                    - CPF: {{ doador.cpf }}
+                {% endif %}
+
+                {% if doador.cnpj %}
+                    - CNPJ: {{ doador.cnpj }}
+                {% endif %}
+
+                {% if doador.endereco %}
+                    - {{ doador.endereco }}
+                {% endif %}
             </li>
         {% endfor %}
     </ul>
