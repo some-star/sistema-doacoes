@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Lista de doações</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <h1>Doações registradas</h1>
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul>
+          {% for message in messages %}
+            <li>{{ message }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+    <ul>
+        {% for doacao in doacoes %}
+            <li>
+                {{ doacao.doador.nome }} - {{ doacao.data }}
+                {% if doacao.valor %}- R$ {{ doacao.valor }}{% endif %}
+                {% if doacao.observacao %}- {{ doacao.observacao }}{% endif %}
+                <form method="POST" action="{{ url_for('excluir_doacao', id=doacao.id) }}" style="display:inline;" onsubmit="return confirm('Tem certeza que deseja excluir esta doação?');">
+                    <button type="submit">Excluir</button>
+                </form>
+            </li>
+        {% endfor %}
+    </ul>
+    <a href="{{ url_for('index') }}">Voltar</a>
+</body>
+</html>

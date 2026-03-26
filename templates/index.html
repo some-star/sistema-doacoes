@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sistema de Doações</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <h1>Menu</h1>
+    <ul>
+        <li><a href="{{ url_for('cadastrar_doador') }}">Cadastrar doador</a></li>
+        <li><a href="{{ url_for('listar_doadores') }}">Listar doadores</a></li>
+        <li><a href="{{ url_for('registrar_doacao') }}">Registrar doação</a></li>
+        <li><a href="{{ url_for('listar_doacoes') }}">Listar doações</a></li>
+    </ul>
+</body>
+</html>

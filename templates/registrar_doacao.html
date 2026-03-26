@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Registrar doação</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <h1>Registrar doação</h1>
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul>
+          {% for message in messages %}
+            <li>{{ message }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+    <form method="POST">
+        Doador*: 
+        <select name="doador" required>
+            {% for doador in doadores %}
+                <option value="{{ doador.id }}">{{ doador.nome }}</option>
+            {% endfor %}
+        </select><br>
+        Data* (dd/mm/aaaa): <input type="text" name="data" required><br>
+        Valor: <input type="number" name="valor" step="0.01"><br>
+        Observação: <input type="text" name="observacao"><br>
+        <button type="submit">Registrar Doação</button>
+    </form>
+    <br>
+    <a href="{{ url_for('index') }}">Voltar</a>
+</body>
+</html>
