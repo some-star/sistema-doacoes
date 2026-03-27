@@ -6,6 +6,18 @@
 </head>
 <body>
     <h1>Doações registradas</h1>
+    <form method="GET">
+    Ano: <input type="text" name="ano" maxlength="4">
+    Mês: <input type="text" name="mes" maxlength="2">
+
+    Ordenar:
+    <select name="ordenar">
+        <option value="">Nenhum</option>
+        <option value="data">Por data</option>
+    </select>
+
+    <button type="submit">Filtrar</button>
+    </form>
     {% with messages = get_flashed_messages() %}
       {% if messages %}
         <ul>
@@ -21,6 +33,8 @@
                 {{ doacao.doador.nome }} - {{ doacao.data }}
                 {% if doacao.valor %}- R$ {{ doacao.valor }}{% endif %}
                 {% if doacao.observacao %}- {{ doacao.observacao }}{% endif %}
+                {% if doacao.forma_pagamento %}- {{ doacao.forma_pagamento }}{% endif %}
+                {% if doacao.tipo_doacao %}- {{ doacao.tipo_doacao }}{% endif %}
                 <form method="POST" action="{{ url_for('excluir_doacao', id=doacao.id) }}" style="display:inline;" onsubmit="return confirm('Tem certeza que deseja excluir esta doação?');">
                     <button type="submit">Excluir</button>
                 </form>

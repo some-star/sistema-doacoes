@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import func
 
 app = Flask(__name__)
 app.secret_key = 'secret-key'  # necessário para mensagens flash
@@ -26,7 +27,6 @@ class Doacao(db.Model):
     data = db.Column(db.String(8), nullable=False)  # agora 8 dígitos
     valor = db.Column(db.Float)
     observacao = db.Column(db.String(200))
-
     forma_pagamento = db.Column(db.String(20))  # novo
     tipo_doacao = db.Column(db.String(20))      # novo
 
@@ -117,7 +117,23 @@ def registrar_doacao():
 
 @app.route('/listar_doacoes')
 def listar_doacoes():
-    doacoes = Doacao.query.all()
+    ano = request.args.get('ano')
+    mes = request.args.get('mes')
+    ordenar = request.args.get('ordenar')
+
+    query = Doacao.query
+
+    if ano:
+        query = query.filter(Doacao.data.like(f"____{ano}"))
+
+    if mes:
+        query = query.filter(Doacao.data.like(f"__{mes}____"))
+
+    if ordenar == "data":
+        query = query.order_by(func.substr(Doacao.data, 1, 2))
+
+    doacoes = query.all()
+
     return render_template('listar_doacoes.html', doacoes=doacoes)
 
 @app.route('/excluir_doacao/<int:id>', methods=['POST'])
