@@ -30,7 +30,7 @@
     <ul>
         {% for doacao in doacoes %}
             <li>
-                {{ doacao.doador.nome }} - {{ doacao.data }}
+                {{ doacao.doador.nome }} - <strong>Data:</strong> {{ doacao.data[0:2] }}/{{ doacao.data[2:4] }}/{{ doacao.data[4:8] }}
                 {% if doacao.valor %}- R$ {{ doacao.valor }}{% endif %}
                 {% if doacao.observacao %}- {{ doacao.observacao }}{% endif %}
                 {% if doacao.forma_pagamento %}- {{ doacao.forma_pagamento }}{% endif %}
